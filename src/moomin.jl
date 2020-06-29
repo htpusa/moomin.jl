@@ -58,6 +58,7 @@ include("output.jl")
                      simpler, topological constraints (false) (default: true)
 - `enumerate`:      Int, how many alternative solutions are sought at most
 - `printLevel`:     Int, determine how much progress info to print (0-2, default: 1)
+- `timeLimit`:      Int, time limit for the MILP solver, in seconds (default: 1000)
 
 """
 function runMoomin(pathToData, pathToModel;
