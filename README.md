@@ -5,7 +5,7 @@ released for MATLAB. If you prefer the MATLAB version, you can find it here:
 
 https://github.com/htpusa/moomin
 
-All the core functionality is the same, however, some eternal utilities for manipulating metabolic networks are currently lacking in Julia.
+All the core functionality is the same, however, some external utilities for manipulating metabolic networks are currently lacking in Julia.
 In addition, only .mat files can be used with this version.
 
 The purpose of MOOMIN is to take DE results and metabolic network, and produce a hypothesis of a metabolic shift. This is represented by colours (coded as integers
