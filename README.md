@@ -48,7 +48,7 @@ the name of the function to see how to use them.
 Note that MOOMIN requires DE results obtained using Bayesian methods. That is, the input should have posterior probabilities of differential expression (PPDE). For
 Bayesian DE analysis, I recommend [EBseq](http://www.bioconductor.org/packages/release/bioc/html/EBSeq.html).
 
-The network needs to include GPR information and the gene identifiers should to match with those in the data.
+The network needs to include GPR information and the gene identifiers should match with those in the data.
 
 # Shout-outs
 
