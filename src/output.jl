@@ -1,24 +1,27 @@
 """
-  writeOutput(model::MoominModel, fileName; nSol=1, format="standard", type="output", asString=true)
+    writeOutput(model::MoominModel, fileName; nSol=1, format="standard", type="output", asString=true)
 
   Function for exporting outputs of the algorithm into a text file in various formats.
 
 # INPUTS
 
--`model`:     A MoominModel structure that is an output of `runMoomin`
--`fileName`:  String to determine were to write the results
+- `model`:     A MoominModel structure that is an output of `runMoomin`
+- `fileName`:  String to determine were to write the results
 
 # OPTIONAL INPUTS
 
--`nSol`:      Int, number of the solution to be printed (default: 1)
--`format`:    String, one of the three options (default: "standard"):
+- `nSol`:      Int, number of the solution to be printed (default: 1)
+- `format`:    String, one of the three options (default: "standard"):
+
                "standard": output is a delimited file with two columns
                 listing the ID and the selected output for each
                 reaction (see later)
                "full": a table that lists various outputs as well as other information
                 for each reaction
                "json": a json file with the selected output for each reaction
--`type`:       String, one of the four options (default: "output"):
+
+- `type`:       String, one of the four options (default: "output"):
+
                 "output": output colour from one solution
                 "input": a priori colours ie colours based solely on data
                 "combined": attempted consensus between all enumerated solutions
@@ -26,12 +29,11 @@
                  is entered
                 "frequency": how often a reaction is coloured in all enumerated
                  solutions
--`asString`:    Boolean, if true, output is given in actual colours (eg "red")
+
+- `asString`:    Boolean, if true, output is given in actual colours (eg "red")
                 (default: true)
-                
+
 """
-
-
 function writeOutput(model::MoominModel, fileName; nSol=1, format="standard", type="output", asString=true)
   if isempty(model.reactions.outputColours)
     @warn "The model contains no solutions."

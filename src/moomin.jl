@@ -21,12 +21,12 @@ include("MILP.jl")
 include("output.jl")
 
 """
-   runMoomin(pathToData, pathToModel;
+    runMoomin(pathToData, pathToModel;
                delimiter='\\t', geneIDhead="GeneID", PPDEhead="PPDE", logFChead="logFC",
                modelStr="model",
                pThresh=0.9, alpha=3, precision=7,
                stoichiometry=true, enumerate=1,
-               printLevel=1)
+               printLevel=1, timeLimit=1000)
 
    Main function to run the full algorithm. Input is a DE data file and metabolic
    network.
