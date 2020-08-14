@@ -94,8 +94,10 @@ end
 end
 
 @testset "MILP" begin
+    optimizer = CPLEX.Optimizer
+
     model = readModel("data/toyData.txt", "data/toyModel.mat")
-    MILP = createMILP(model, CPLEX.Optimizer, stoichiometry=true)
+    MILP = createMILP(model, optimizer, stoichiometry=true)
     @test lower_bound.(MILP[:v]) == fill(-100, 7)
     @test upper_bound.(MILP[:v]) == [100; 0; fill(100, 5)]
 
@@ -116,28 +118,32 @@ end
     @test model.reactions.outputFrequency == round.([1/3; 2/3; 2/3; 0; 1], digits=3)
     @test model.reactions.combinedOutput == [1; 2; 6; 0; 1]
 
-    model = runMoomin("data/ecoliData.txt", "data/ecoli.mat",
+    model = runMoomin("data/ecoliData.txt", "data/ecoli.mat", optimizer,
                 delimiter='\t', geneIDhead="GeneID", PPDEhead="PPDE", logFChead="logFC",
                 modelStr="model",
                 pThresh=0.9, alpha=1, precision=7,
-                stoichiometry=true, enumerate=1)
-    sol = readdlm("data/stoich_sol.txt")
-    @test sol[:] == model.reactions.outputColours
-
-    model = runMoomin("data/ecoliData.txt", "data/ecoli.mat",
                 stoichiometry=true, enumerate=10)
-    sol = readdlm("data/stoich_comb.txt")
-    @test sol[:] == model.reactions.combinedOutput
+    @test size(model.reactions.outputColours, 2) == 1
+    sol = readdlm("data/stoich_sol.txt")
+    @test sol[:] == (model.reactions.outputColours .!= 0)
 
-    model = runMoomin("data/ecoliData.txt", "data/ecoli.mat",
-                stoichiometry=false)
+    model = runMoomin("data/ecoliData.txt", "data/ecoli.mat", optimizer,
+                stoichiometry=true, enumerate=10)
+    @test size(model.reactions.outputColours, 2) == 3
+    sol = readdlm("data/stoich_freq.txt")
+    @test all(abs.(sol[:] .- model.reactions.outputFrequency) .< 0.01)
+
+    model = runMoomin("data/ecoliData.txt", "data/ecoli.mat", optimizer,
+                stoichiometry=false, enumerate=10)
+    @test size(model.reactions.outputColours, 2) == 1
     sol = readdlm("data/topo_sol.txt")
-    @test sol[:] == model.reactions.outputColours
+    @test sol[:] == (model.reactions.outputColours .!= 0)
 
-    model = runMoomin("data/ecoliData.txt", "data/ecoli.mat",
+    model = runMoomin("data/ecoliData.txt", "data/ecoli.mat", optimizer,
                 stoichiometry=false, alpha=1, enumerate=10)
-    sol = readdlm("data/topo_comb.txt")
-    @test sol[:] == model.reactions.combinedOutput
+    @test size(model.reactions.outputColours, 2) == 4
+    sol = readdlm("data/topo_freq.txt")
+    @test all(abs.(sol[:] .- model.reactions.outputFrequency) .< 0.01)
 
     rm("solver.log")
 end

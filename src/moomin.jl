@@ -11,6 +11,7 @@ using MAT
 using DelimitedFiles
 using JuMP
 using CPLEX
+using GLPK
 
 include("data.jl")
 include("weight.jl")
@@ -21,7 +22,7 @@ include("MILP.jl")
 include("output.jl")
 
 """
-    runMoomin(pathToData, pathToModel;
+    runMoomin(pathToData, pathToModel, optimizer;
                delimiter='\\t', geneIDhead="GeneID", PPDEhead="PPDE", logFChead="logFC",
                modelStr="model",
                pThresh=0.9, alpha=3, precision=7,
@@ -36,6 +37,7 @@ include("output.jl")
 - `pathToData`:      A String that gives the location of file containing DE results
 - `pathToModel`:     A String that gives the location of a .mat file containing
                       the metabolic network to be used
+- `optimizer`:       An Optimizer object acting as the solver handle
 
 # OPTIONAL INPUTS
 
@@ -61,7 +63,7 @@ include("output.jl")
 - `timeLimit`:      Int, time limit for the MILP solver, in seconds (default: 1000)
 
 """
-function runMoomin(pathToData, pathToModel;
+function runMoomin(pathToData, pathToModel, optimizer;
                delimiter='\t', geneIDhead="GeneID", PPDEhead="PPDE", logFChead="logFC",
                modelStr="model",
             	pThresh=0.9, alpha=3, precision=7,
@@ -73,7 +75,7 @@ function runMoomin(pathToData, pathToModel;
    	modelStr=modelStr,
    	pThresh=pThresh, alpha=alpha, precision=precision)
 
-   solve!(model, CPLEX.Optimizer, stoichiometry=stoichiometry, enumerate=enumerate,
+   solve!(model, optimizer, stoichiometry=stoichiometry, enumerate=enumerate,
             printLevel=printLevel, timeLimit=timeLimit)
 
    return model
