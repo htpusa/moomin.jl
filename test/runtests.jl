@@ -120,24 +120,28 @@ end
                 delimiter='\t', geneIDhead="GeneID", PPDEhead="PPDE", logFChead="logFC",
                 modelStr="model",
                 pThresh=0.9, alpha=1, precision=7,
-                stoichiometry=true, enumerate=1)
+                stoichiometry=true, enumerate=10)
+    @test size(model.reactions.outputColours, 2) == 1
     sol = readdlm("data/stoich_sol.txt")
-    @test sol[:] == model.reactions.outputColours
+    @test sol[:] == (model.reactions.outputColours .!= 0)
 
     model = runMoomin("data/ecoliData.txt", "data/ecoli.mat",
                 stoichiometry=true, enumerate=10)
-    sol = readdlm("data/stoich_comb.txt")
-    @test sol[:] == model.reactions.combinedOutput
+    @test size(model.reactions.outputColours, 2) == 3
+    sol = readdlm("data/stoich_freq.txt")
+    @test all(abs.(sol[:] .- model.reactions.outputFrequency) .< 0.01)
 
     model = runMoomin("data/ecoliData.txt", "data/ecoli.mat",
-                stoichiometry=false)
+                stoichiometry=false, enumerate=10)
+    @test size(model.reactions.outputColours, 2) == 1
     sol = readdlm("data/topo_sol.txt")
-    @test sol[:] == model.reactions.outputColours
+    @test sol[:] == (model.reactions.outputColours .!= 0)
 
     model = runMoomin("data/ecoliData.txt", "data/ecoli.mat",
                 stoichiometry=false, alpha=1, enumerate=10)
-    sol = readdlm("data/topo_comb.txt")
-    @test sol[:] == model.reactions.combinedOutput
+    @test size(model.reactions.outputColours, 2) == 4
+    sol = readdlm("data/topo_freq.txt")
+    @test all(abs.(sol[:] .- model.reactions.outputFrequency) .< 0.01)
 
     rm("solver.log")
 end
