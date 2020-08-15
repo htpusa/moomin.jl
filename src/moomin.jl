@@ -10,8 +10,6 @@ module moomin
 using MAT
 using DelimitedFiles
 using JuMP
-using CPLEX
-using GLPK
 
 include("data.jl")
 include("weight.jl")
