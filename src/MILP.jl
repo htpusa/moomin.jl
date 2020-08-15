@@ -81,7 +81,11 @@ end
 
 function createMILP(model::MoominModel, optimizer; stoichiometry=true, timeLimit=1000)
   MILP = JuMP.Model(optimizer)
-  set_optimizer_attribute(MILP, "CPXPARAM_TimeLimit", timeLimit)
+  if solver_name(MILP) == "CPLEX"
+    set_optimizer_attribute(MILP, "CPXPARAM_TimeLimit", timeLimit)
+  elseif solver_name(MILP) == "Gurobi"
+    set_optimizer_attribute(MILP, "TimeLimit", timeLimit)
+  end
 
   if stoichiometry
     MILPstoich!(MILP, model)
