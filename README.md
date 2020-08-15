@@ -31,9 +31,13 @@ https://doi.org/10.1093/bioinformatics/btz584
 
 How install and use Julia, see: https://julialang.org/
 
-The CPLEX solver is needed. Installing CPLEX for Julia: https://github.com/jump-dev/CPLEX.jl
+A MILP solver is needed, you can use either CPLEX or Gurobi. GLPK unfortunately appears to be way too slow.
 
-Note that academic licenses are available for CPLEX.
+Installing CPLEX for Julia: https://github.com/jump-dev/CPLEX.jl
+
+Installing Gurobi for Julia: https://github.com/jump-dev/Gurobi.jl
+
+Note that academic licenses are available for both solvers.
 
 # Usage
 
@@ -43,7 +47,7 @@ run `using moomin`. After that you can use all functions in the package.
 
 The only functions you would normally need are `runMoomin` and `writeOutput`. The former reads the data and the network file and runs the algorithm. It returns a
 custom structure that contains all the inputs and outputs of the method. This structure can then be passed to `writeOutput` to export results. Type `?` and then
-the name of the function to see how to use them.
+the name of the function to see how to use them. Note that before using `runMoomin`, you need to import your solver of choice and create an `Optimizer` object to pass to the function.
 
 Note that MOOMIN requires DE results obtained using Bayesian methods. That is, the input should have posterior probabilities of differential expression (PPDE). For
 Bayesian DE analysis, I recommend [EBseq](http://www.bioconductor.org/packages/release/bioc/html/EBSeq.html).
@@ -59,6 +63,10 @@ https://github.com/JuliaIO/MAT.jl to read .mat files
 https://jump.dev/ to build and solve MILPs
 
 https://github.com/jump-dev/CPLEX.jl to interact with CPLEX
+
+or 
+
+https://github.com/jump-dev/Gurobi.jl to interact with Gurobi
 
 The E. coli model used for tests was downloaded from http://systemsbiology.ucsd.edu/Downloads/EcoliCore
 
