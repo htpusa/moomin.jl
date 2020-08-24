@@ -1,4 +1,4 @@
-# moominJL
+# moomin.jl
 
 This is a Julia implementation of MOOMIN, a method for analysing differential expression (DE) data with the help of a metabolic network, that was previously
 released for MATLAB. If you prefer the MATLAB version, you can find it here:
@@ -41,7 +41,7 @@ Note that academic licenses are available for both solvers.
 
 # Usage
 
-The easiest way to run moominJL, once you have installed Julia and CPLEX, is to use the Julia REPL. Navigate to this directory, and activate the package by entering
+The easiest way to run moomin.jl, once you have installed Julia and CPLEX, is to use the Julia REPL. Navigate to this directory, and activate the package by entering
 Pkg by pressing `]` and running `activate .`. After that you can test that everything is working by running `test moomin`. Exit the Pkg with backspace or ^C, and
 run `using moomin`. After that you can use all functions in the package.
 
@@ -82,7 +82,7 @@ You can export your results in different formats using the `writeOutput` functio
 
 # Citation
 
-If you use moominJL, please cite
+If you use moomin.jl, please cite
 
 Taneli Pusa, Mariana Galvão Ferrarini, Ricardo Andrade, Arnaud Mary, Alberto Marchetti-Spaccamela, Leen Stougie, Marie-France Sagot,
 MOOMIN – Mathematical explOration of ’Omics data on a MetabolIc Network, Bioinformatics, Volume 36, Issue 2, 15 January 2020, Pages 514–523,
