@@ -56,7 +56,7 @@ The network needs to include GPR information and the gene identifiers should mat
 
 # Shout-outs
 
-moominJL uses
+moomin.jl uses
 
 https://github.com/JuliaIO/MAT.jl to read .mat files
 
