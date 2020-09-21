@@ -167,7 +167,7 @@ end
             @test all(abs.(sol[:] .- model.reactions.outputFrequency) .< 0.01)
         end
 
-        rm("solver.log")
+        isfile("solver.log") && rm("solver.log")
     end
 end
 
