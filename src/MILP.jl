@@ -1,26 +1,19 @@
 function solve!(model::MoominModel, optimizer; enumerate=1, stoichiometry=true, printLevel=1, timeLimit=1000)
   printLevel == 0 || @info "Creating MILP..."
   MILP = createMILP(model, optimizer, stoichiometry=stoichiometry, timeLimit=timeLimit)
+  printLevel < 2 && set_silent(MILP)
   cont = true
   counter = 1
   outputColours = []
   while cont
     printLevel == 0 || @info "Solving MILP #$counter..."
-    if printLevel < 2
-      open("solver.log", "w") do out
-        redirect_stdout(out) do
-          optimize!(MILP)
-        end
-      end
-    else
-      optimize!(MILP)
-    end
+    optimize!(MILP)
     solFound = termination_status(MILP) == MOI.OPTIMAL
     timeLimitReached = termination_status(MILP) == MOI.TIME_LIMIT
-    !(solFound & printLevel > 0) || @info "Found solution!"
-    !(!solFound & (printLevel > 0) & (counter > 1) ) || @info "No optimum found."
-    !(!solFound & (counter == 1) ) || @warn "Couldn't solve MILP #1."
-    !timeLimitReached || @warn "Solver time limit reached."
+    (solFound & (printLevel > 0)) && @info "Found solution!"
+    (!solFound & (printLevel > 0) & (counter > 1) ) && @info "No optimum found."
+    (!solFound & (counter == 1) ) && @warn "Couldn't solve MILP #1."
+    timeLimitReached && @warn "Solver time limit reached."
     if solFound
       if isempty(outputColours)
         outputColours = interpretSolution(value.(MILP[:xPlus]),
@@ -40,9 +33,6 @@ function solve!(model::MoominModel, optimizer; enumerate=1, stoichiometry=true, 
   end
 
   fillOutputs!(model, outputColours)
-  if printLevel < 1
-    rm("solver.log")
-  end
 end
 
 

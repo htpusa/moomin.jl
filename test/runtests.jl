@@ -166,8 +166,6 @@ end
             sol = readdlm("data/topo_freq.txt")
             @test all(abs.(sol[:] .- model.reactions.outputFrequency) .< 0.01)
         end
-
-        isfile("solver.log") && rm("solver.log")
     end
 end
 
