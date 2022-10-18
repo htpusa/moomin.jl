@@ -38,6 +38,6 @@ end
 Determine colours and weights for genes
 """
 function colour!(genes::Genes, pThresh, alpha, precision)
-	genes.colours = Int.(genes.PPDE .>0.9) .* sign.(genes.logFC)
+	genes.colours = Int.(genes.PPDE .> pThresh) .* sign.(genes.logFC)
 	genes.weights = weight.(genes.PPDE, pThresh, alpha, precision)
 end
